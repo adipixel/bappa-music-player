@@ -187,6 +187,19 @@ body[data-rot="kakad"] .wash--lamp { opacity: 0.34; }
 .topbar__right { text-align: right; line-height: 1.3; }
 .clock { display: block; font-size: 0.94rem; font-variant-numeric: tabular-nums; }
 .clock__zone { display: block; font-size: 0.68rem; color: var(--text-faint); }
+.listeners {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 4px;
+  font-family: var(--dev); font-size: 0.7rem; color: var(--haldi);
+}
+/* An explicit display value beats the hidden attribute, so restore it —
+   otherwise the live dot shows with no count behind it. */
+.listeners[hidden] { display: none; }
+.listeners::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--vermillion-hot);
+  box-shadow: 0 0 8px var(--vermillion-hot);
+}
 
 /* ── Scene switcher ───────────────────────────────────────────────────── */
 
@@ -220,6 +233,44 @@ body[data-rot="kakad"] .wash--lamp { opacity: 0.34; }
 }
 .spick__dev { display: block; font-family: var(--dev); font-size: 1rem; font-weight: 600; }
 .spick__hint { display: block; font-size: 0.63rem; letter-spacing: 0.06em; opacity: 0.72; margin-top: 2px; }
+
+/* ── Channel switch ───────────────────────────────────────────────────── */
+
+/* Left edge, mirroring the scene switcher on the right: what you hear on one
+   side, where you are on the other. */
+/* Sits high on the left, under the wordmark — the rotation heading occupies
+   the lower left, and a vertically centred switcher collides with it on short
+   viewports. */
+.chanpick {
+  position: fixed;
+  z-index: 40;
+  top: 96px;
+  left: clamp(16px, 4vw, 34px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.chan {
+  appearance: none;
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  color: var(--text-dim);
+  padding: 12px 18px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 260ms var(--ease);
+}
+.chan:hover:not(:disabled) { background: var(--glass-hi); color: var(--text); }
+.chan.is-on {
+  background: rgba(226, 69, 42, 0.35);
+  border-color: rgba(255, 160, 120, 0.5);
+  color: #fff;
+}
+.chan:disabled { opacity: 0.32; cursor: not-allowed; }
+.chan__dev { display: block; font-family: var(--dev); font-size: 1.06rem; font-weight: 600; }
+.chan__en { display: block; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.72; margin-top: 2px; }
 
 /* ── Rotation card ────────────────────────────────────────────────────── */
 
@@ -287,6 +338,14 @@ body[data-rot="kakad"] .wash--lamp { opacity: 0.34; }
   background: rgba(40, 18, 8, 0.82);
   backdrop-filter: blur(12px);
 }
+.setup__close {
+  position: absolute; top: 10px; right: 12px;
+  width: 24px; height: 24px;
+  border: 1px solid var(--hairline); border-radius: 50%;
+  background: var(--glass); color: var(--text-dim);
+  font-size: 0.7rem; cursor: pointer;
+}
+.setup__close:hover { color: var(--text); }
 .setup__title { margin: 0 0 6px; font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--haldi); }
 .setup__body { margin: 0; font-size: 0.84rem; line-height: 1.55; color: var(--text-dim); }
 .setup code {
@@ -360,10 +419,21 @@ body[data-rot="kakad"] .wash--lamp { opacity: 0.34; }
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow: 0 6px 26px rgba(226, 69, 42, 0.5);
 }
+.tbtn--small { width: 34px; height: 34px; font-size: 0.8rem; }
+.tbtn--small.is-on {
+  background: rgba(226, 69, 42, 0.4);
+  border-color: rgba(255, 160, 120, 0.55);
+  color: #fff;
+}
 
 .player__seek { grid-area: seek; display: flex; align-items: center; gap: 12px; }
 .player__time { font-size: 0.7rem; font-variant-numeric: tabular-nums; color: var(--text-faint); min-width: 2.6rem; }
-.player__time:last-child { text-align: right; }
+/* Position within the playlist. Replaces the queue panel — playlist mode never
+   exposes upcoming titles, so a count is the honest amount of detail. */
+.player__pos {
+  font-size: 0.7rem; font-variant-numeric: tabular-nums;
+  color: var(--text-faint); min-width: 4.2rem; text-align: right;
+}
 
 .seek, .mixer__slider {
   appearance: none;
@@ -400,7 +470,7 @@ body[data-rot="kakad"] .wash--lamp { opacity: 0.34; }
 
 /* ── Slide-in panels ──────────────────────────────────────────────────── */
 
-.lyrics, .mixer, .queue {
+.lyrics, .mixer {
   position: fixed;
   z-index: 60;
   right: 0;
@@ -415,23 +485,35 @@ body[data-rot="kakad"] .wash--lamp { opacity: 0.34; }
   transform: translateX(100%);
   transition: transform 420ms var(--ease);
 }
-.lyrics.is-open, .mixer.is-open, .queue.is-open { transform: translateX(0); }
-.lyrics[hidden], .mixer[hidden], .queue[hidden] { display: block; }
+.lyrics.is-open, .mixer.is-open { transform: translateX(0); }
+/* [hidden] would kill the slide-in, so visibility is driven by the transform. */
+.lyrics[hidden], .mixer[hidden] { display: block; }
 
-.lyrics__head, .mixer__head, .queue__head {
+.lyrics__head, .mixer__head {
   display: flex; justify-content: space-between; align-items: flex-start;
   gap: 12px; margin-bottom: 18px;
   padding-top: max(0px, env(safe-area-inset-top));
 }
-.lyrics__title, .mixer__title, .queue__title {
+.lyrics__title, .mixer__title {
   margin: 0; font-family: var(--dev); font-size: 1.18rem; font-weight: 600;
 }
-.lyrics__close, .mixer__close, .queue__close {
+.lyrics__close, .mixer__close {
   border: 1px solid var(--hairline); border-radius: 50%;
   width: 30px; height: 30px; flex: none;
   background: var(--glass); color: var(--text-dim); cursor: pointer;
 }
-.lyrics__close:hover, .mixer__close:hover, .queue__close:hover { color: var(--text); }
+.lyrics__close:hover, .mixer__close:hover { color: var(--text); }
+
+/* Support links */
+.slinks { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+.slink {
+  display: block; padding: 13px 16px;
+  border: 1px solid var(--hairline); border-radius: 12px;
+  background: var(--glass); color: var(--text);
+  text-decoration: none; font-size: 0.92rem;
+  transition: all 200ms var(--ease);
+}
+.slink:hover { background: rgba(226, 69, 42, 0.32); border-color: rgba(255, 160, 120, 0.5); }
 
 .lyrics__body {
   margin: 0;
@@ -459,25 +541,6 @@ body[data-rot="kakad"] .wash--lamp { opacity: 0.34; }
 }
 .mixer__cap { margin: 7px 0 0; font-size: 0.72rem; color: var(--text-faint); }
 
-.queue__list { list-style: none; margin: 0; padding: 0; counter-reset: q; }
-.qitem {
-  display: flex; gap: 12px; align-items: baseline;
-  width: 100%; text-align: left;
-  padding: 11px 12px; margin-bottom: 3px;
-  border: 0; border-radius: 10px;
-  background: transparent; color: var(--text-dim);
-  cursor: pointer; font: inherit;
-  transition: background 180ms var(--ease);
-}
-.qitem:hover { background: rgba(255, 255, 255, 0.07); color: var(--text); }
-.qitem.is-current { background: rgba(226, 69, 42, 0.28); color: #fff; }
-.qitem.is-silent { opacity: 0.34; cursor: not-allowed; }
-.qitem__n { font-size: 0.7rem; font-variant-numeric: tabular-nums; color: var(--text-faint); min-width: 1.4rem; }
-.qitem__body { min-width: 0; }
-.qitem__title { display: block; font-size: 0.9rem; }
-.qitem__title .dev { font-family: var(--dev); }
-.qitem__artist { display: block; font-size: 0.72rem; color: var(--text-faint); margin-top: 2px; }
-
 /* The YouTube iframe exists but is never seen — audio only. */
 .ytcage {
   position: fixed;
@@ -489,6 +552,7 @@ body[data-rot="kakad"] .wash--lamp { opacity: 0.34; }
 /* ── Narrow screens ───────────────────────────────────────────────────── */
 
 @media (max-width: 820px) {
+  /* Both switchers drop to horizontal rows stacked above the player. */
   .scenepick {
     top: auto; bottom: 216px; right: 50%;
     transform: translateX(50%);
@@ -497,17 +561,26 @@ body[data-rot="kakad"] .wash--lamp { opacity: 0.34; }
   .spick { text-align: center; padding: 9px 15px; }
   .spick__hint { display: none; }
 
+  .chanpick {
+    top: auto; bottom: 272px; left: 50%;
+    transform: translateX(-50%);
+    flex-direction: row;
+  }
+  .chan { text-align: center; padding: 9px 18px; }
+  .chan__en { display: none; }
+
   .player {
     grid-template-columns: 1fr auto;
     grid-template-areas: "meta transport" "seek seek" "extras extras";
     gap: 8px 14px;
   }
   .player__extras { justify-content: center; }
-  .stage { padding-bottom: 286px; }
+  .stage { padding-bottom: 340px; }
   .setup { top: 80px; }
   .rotcard__blurb { font-size: 0.9rem; }
   .rotcard__dev { font-size: clamp(2.2rem, 11vw, 3.4rem); }
-  .lyrics, .mixer, .queue { width: 100vw; }
+  .player__pos { display: none; }
+  .lyrics, .mixer { width: 100vw; }
 }
 
 @media (prefers-reduced-motion: reduce) {
