@@ -57,6 +57,6 @@ const CONFIG = {
      the Open Graph image URL, which must be absolute to work in previews.
      While blank, sharing falls back to whatever URL the page is served from
      and the OG tags stay relative. */
-  siteUrl: '',
+  siteUrl: 'https://bappa-pandal.netlify.app',
   shareText: 'गणपती बाप्पा मोरया — this is playing right now.',
 };
