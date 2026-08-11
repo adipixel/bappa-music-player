@@ -17,11 +17,12 @@ const CONFIG = {
      IFrame API can only play videos whose owner permits embedding. Tracks
      that refuse to embed are skipped automatically. */
   playlists: {
-    /* ⚠ The ID supplied was `PLMeCLr1IOg2o` — 13 characters, which matches no
-       YouTube playlist format (they are 18 or 34). It looks truncated at the
-       copy step. Left empty rather than guessed; the संगीत channel stays
-       disabled until it is filled. */
-    sangeet: '',
+    /* Confirmed by hand from music.youtube.com. Note this is 13 characters
+       where YouTube playlist IDs are normally 18 or 34 — if the संगीत channel
+       fails to load, this is the first thing to re-check, by copying the
+       `list=` value straight out of the browser address bar. The player names
+       the channel and the ID in its error, so a bad ID says so out loud. */
+    sangeet: 'PLMeCLr1IOg2o',
     aarti: 'PLvrdjNni17MkwaA0URia5QFiDO4X6_ngY',
   },
 
@@ -47,7 +48,7 @@ const CONFIG = {
      Any left blank are omitted from the panel. If all are blank the support
      button disappears entirely. */
   support: {
-    razorpay: '',
+    razorpay: 'https://razorpay.me/@adityamhamunkar',
     kofi: '',
     upi: '',            /* a upi:// link or a VPA like name@bank */
   },

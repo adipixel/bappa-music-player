@@ -41,18 +41,25 @@ Everything below lives in `config.js`. **The page runs with all of it empty** �
 each feature checks its own config and hides itself when unset, so nothing ever
 renders broken, dead, or fake while you gather the pieces.
 
-### 1. The संगीत playlist ID — required for that channel
+### 1. Playlist IDs — both are set
 
-The ID supplied was `PLMeCLr1IOg2o`. That is 13 characters (`PL` + 11), and no
-YouTube playlist ID has that shape — they are `PL` + 32 (34 total) or `PL` + 16
-(18 total). It looks truncated at the copy step, so it was left empty rather
-than guessed. The संगीत channel button is disabled until it is filled.
+| channel | id |
+|---|---|
+| संगीत | `PLMeCLr1IOg2o` |
+| आरती | `PLvrdjNni17MkwaA0URia5QFiDO4X6_ngY` |
 
-The आरती playlist, `PLvrdjNni17MkwaA0URia5QFiDO4X6_ngY`, is a valid 34-character
-ID and is wired up.
+> Neither could be verified — youtube.com is blocked from the network this was
+> built on. They are unconfirmed as public, populated, or embeddable.
 
-> Neither playlist could be verified — youtube.com is blocked from the network
-> this was built on. They are unconfirmed as public, populated, or embeddable.
+The संगीत ID is 13 characters where YouTube playlist IDs are normally 18
+(`PL` + 16) or 34 (`PL` + 32). It was supplied and confirmed by hand from
+music.youtube.com, so it is wired up as given. **If that channel fails to load
+this is the first thing to re-check** — copy the `list=` value straight out of
+the browser address bar on youtube.com.
+
+The player names the channel, the error code, and the ID when a playlist fails,
+so a bad ID reports itself rather than presenting as silence. Error 2 means the
+ID is malformed; 5 and 100 mean it is private, unlisted, or gone.
 
 **Embedding is the risk to watch.** These are YouTube *Music* playlists. The
 `PL` prefix means user-created, which normally resolves on youtube.com with the
@@ -80,10 +87,11 @@ SDK — no bundle, no build step, and the rest of the page does not depend on it
 loading. A visitor counts as present while their stamp is under a minute old,
 which tolerates closed tabs and dropped connections.
 
-### 3. Support links
+### 3. Support links — Razorpay is set
 
-Fill any of `razorpay`, `kofi`, or `upi` in `CONFIG.support`. Blank ones are
-omitted; if all three are blank the मदत button disappears.
+`https://razorpay.me/@adityamhamunkar` is wired up. Add `kofi` or `upi` in
+`CONFIG.support` alongside it if you want more; blank ones are omitted, and if
+all three were blank the मदत button would disappear entirely.
 
 ### 4. Site URL
 

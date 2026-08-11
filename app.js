@@ -134,9 +134,22 @@ window.onYouTubeIframeAPIReady = function () {
       onStateChange: onYtState,
       /* 101/150 mean the owner disallows embedding. Skipping is the only
          sane response — the track simply is not playable here. */
+      /* 101/150 mean the owner disallows embedding — skip, the track simply
+         is not playable here. 2/5/100 are the playlist itself failing, which
+         is worth naming precisely: a bad or private playlist ID is otherwise
+         indistinguishable from silence. */
       onError: e => {
-        if ([101, 150].includes(e.data) && state.playing) yt.nextVideo();
-        else if ([2, 5, 100].includes(e.data)) showFault('That playlist could not be loaded.');
+        if ([101, 150].includes(e.data) && state.playing) { yt.nextVideo(); return; }
+        if ([2, 5, 100].includes(e.data)) {
+          const c = state.channel;
+          const id = (CONFIG.playlists[c.key] || '').trim();
+          showFault(
+            `The ${c.dev} playlist could not be loaded (error ${e.data}, id "${id}"). `
+            + (e.data === 2
+                ? 'That usually means the ID is wrong — re-copy the list= value from the address bar.'
+                : 'Check the playlist is public rather than private or unlisted.')
+          );
+        }
       },
     },
   });
