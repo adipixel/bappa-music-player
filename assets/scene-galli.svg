@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <!-- PLACEHOLDER — गल्ली / Street.
+       Stand-in for the commissioned artwork. Composition here mirrors the
+       spec in README.md: pandal archway on the centre line, crowd mass in the
+       lower third, buildings framing the sides, sky clear across the top. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a1554"/>
+      <stop offset="45%" stop-color="#7b2d4a"/>
+      <stop offset="78%" stop-color="#c85a2c"/>
+      <stop offset="100%" stop-color="#e8863a"/>
+    </linearGradient>
+    <radialGradient id="pandalGlow" cx="0.5" cy="0.62" r="0.42">
+      <stop offset="0%" stop-color="#ffd98a" stop-opacity="0.95"/>
+      <stop offset="45%" stop-color="#ff9d3c" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ff7a1f" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a2018"/>
+      <stop offset="100%" stop-color="#160b07"/>
+    </linearGradient>
+    <linearGradient id="bldg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3d1f36"/>
+      <stop offset="100%" stop-color="#1d0e14"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+
+  <!-- buildings, left and right, framing the lane -->
+  <g fill="url(#bldg)">
+    <rect x="0" y="180" width="300" height="900"/>
+    <rect x="270" y="300" width="220" height="780"/>
+    <rect x="1620" y="150" width="300" height="930"/>
+    <rect x="1430" y="320" width="210" height="760"/>
+  </g>
+  <g fill="#ffcf7a" opacity="0.55">
+    <rect x="60" y="260" width="46" height="60" rx="4"/>
+    <rect x="160" y="380" width="46" height="60" rx="4"/>
+    <rect x="330" y="420" width="42" height="56" rx="4"/>
+    <rect x="1700" y="240" width="46" height="60" rx="4"/>
+    <rect x="1800" y="400" width="46" height="60" rx="4"/>
+    <rect x="1480" y="440" width="42" height="56" rx="4"/>
+  </g>
+
+  <!-- string lights across the lane -->
+  <g stroke="#ffb347" stroke-width="2" opacity="0.5" fill="none">
+    <path d="M120 250 Q960 430 1800 230"/>
+    <path d="M300 360 Q960 520 1620 340"/>
+  </g>
+  <g fill="#ffe0a0">
+    <circle cx="380" cy="330" r="6"/><circle cx="620" cy="382" r="6"/>
+    <circle cx="860" cy="410" r="6"/><circle cx="1100" cy="412" r="6"/>
+    <circle cx="1340" cy="386" r="6"/><circle cx="1560" cy="334" r="6"/>
+  </g>
+
+  <!-- pandal glow + archway on the centre line -->
+  <ellipse cx="960" cy="700" rx="620" ry="420" fill="url(#pandalGlow)"/>
+  <path d="M660 860 L660 620 Q960 440 1260 620 L1260 860 Z" fill="#8c2f1c" opacity="0.9"/>
+  <path d="M700 860 L700 640 Q960 486 1220 640 L1220 860 Z" fill="#ffb03a" opacity="0.35"/>
+  <!-- idol silhouette, small, deep inside the arch -->
+  <g fill="#5c1a10" opacity="0.85">
+    <ellipse cx="960" cy="742" rx="66" ry="78"/>
+    <circle cx="960" cy="660" r="52"/>
+    <path d="M960 690 q26 40 6 74 q-16 26 -34 6 q-12 -16 4 -34 z"/>
+  </g>
+
+  <!-- road -->
+  <rect x="0" y="858" width="1920" height="222" fill="url(#road)"/>
+
+  <!-- crowd mass, lower third -->
+  <g fill="#150a08" opacity="0.92">
+    <g>
+      <circle cx="180" cy="900" r="30"/><rect x="150" y="928" width="60" height="152" rx="22"/>
+      <circle cx="320" cy="920" r="27"/><rect x="293" y="946" width="54" height="134" rx="20"/>
+      <circle cx="470" cy="898" r="31"/><rect x="439" y="926" width="62" height="154" rx="22"/>
+      <circle cx="640" cy="926" r="26"/><rect x="614" y="950" width="52" height="130" rx="19"/>
+      <circle cx="790" cy="906" r="29"/><rect x="761" y="932" width="58" height="148" rx="21"/>
+      <circle cx="1130" cy="912" r="28"/><rect x="1102" y="938" width="56" height="142" rx="20"/>
+      <circle cx="1290" cy="894" r="32"/><rect x="1258" y="924" width="64" height="156" rx="23"/>
+      <circle cx="1450" cy="924" r="26"/><rect x="1424" y="948" width="52" height="132" rx="19"/>
+      <circle cx="1600" cy="902" r="30"/><rect x="1570" y="930" width="60" height="150" rx="22"/>
+      <circle cx="1760" cy="922" r="27"/><rect x="1733" y="948" width="54" height="132" rx="20"/>
+    </g>
+  </g>
+
+  <text x="960" y="1046" font-family="system-ui, sans-serif" font-size="19"
+        fill="#ffffff" opacity="0.3" text-anchor="middle" letter-spacing="5">
+    PLACEHOLDER · गल्ली / STREET · REPLACE WITH ARTWORK
+  </text>
+</svg>

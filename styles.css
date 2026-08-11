@@ -1,0 +1,588 @@
+/* पंडाल — Pandal
+   One scene, one speaker, no navigation. Everything below serves atmosphere;
+   the only real UI is the bar at the bottom. */
+
+:root {
+  /* Pulled off the logo mark and the festival's own palette. */
+  --vermillion: #e2452a;
+  --vermillion-hot: #ff5c38;
+  --marigold: #f5a623;
+  --haldi: #ffd27a;
+  --ink: #1a0d08;
+
+  --text: #ffffff;
+  --text-dim: rgba(255, 255, 255, 0.7);
+  --text-faint: rgba(255, 255, 255, 0.45);
+
+  --glass: rgba(0, 0, 0, 0.35);
+  --glass-hi: rgba(0, 0, 0, 0.55);
+  --hairline: rgba(255, 255, 255, 0.14);
+
+  --scene-fade: 1500ms;          /* matches deluxebus's mode crossfade */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --dev: "Noto Sans Devanagari", "Nirmala UI", "Mangal", "Kohinoor Devanagari",
+         system-ui, sans-serif;
+  --latin: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--latin);
+  -webkit-font-smoothing: antialiased;
+}
+
+body.is-gated > *:not(.gate):not(.scenery) { opacity: 0; pointer-events: none; }
+body { transition: opacity 400ms var(--ease); }
+
+/* ── Scenery ──────────────────────────────────────────────────────────── */
+
+.scenery { position: fixed; inset: 0; z-index: 0; }
+
+.scene {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: 50% 50%;
+  opacity: 0;
+  transition: opacity var(--scene-fade) var(--ease);
+  will-change: opacity;
+}
+.scene.is-live { opacity: 1; }
+
+/* Wash stack. Blend modes do the colour grading so one flat illustration can
+   carry both a morning and a midnight mood. */
+.wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity var(--scene-fade) var(--ease);
+}
+.wash--warm {
+  background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.10) 0%, transparent 70%);
+  mix-blend-mode: overlay;
+  opacity: 0.7;
+}
+/* Light hand here. A colour-blend wash strong enough to unify the palette is
+   also strong enough to flatten the artwork into one brown smear. */
+.wash--tint {
+  background: linear-gradient(180deg, rgba(226, 69, 42, 0.55) 0%, transparent 100%);
+  mix-blend-mode: color;
+  opacity: 0.22;
+}
+.wash--lamp {
+  background: radial-gradient(at 50% 0%, rgba(255, 180, 80, 0.22) 0%, transparent 70%);
+  mix-blend-mode: screen;
+  opacity: 0.5;
+}
+/* Darkening is concentrated at the edges and along the bottom, where the
+   player bar needs contrast — the centre of the frame stays legible. */
+.wash--vignette {
+  background:
+    radial-gradient(circle at 50% 45%, transparent 44%, rgba(0, 0, 0, 0.72) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, transparent 24%, transparent 52%, rgba(0, 0, 0, 0.8) 100%);
+  opacity: 0.85;
+}
+
+/* Night rotation cools and deepens the same artwork. */
+body[data-rot="dhol"] .wash--tint  { opacity: 0.34; background: linear-gradient(180deg, rgba(60, 30, 120, 0.6) 0%, transparent 100%); }
+body[data-rot="dhol"] .wash--lamp  { opacity: 0.62; }
+body[data-rot="dhol"] .wash--vignette { opacity: 0.95; }
+body[data-rot="kakad"] .wash--tint { opacity: 0.14; }
+body[data-rot="kakad"] .wash--lamp { opacity: 0.34; }
+
+/* ── Entry gate ───────────────────────────────────────────────────────── */
+
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(12, 6, 4, 0.55);
+  backdrop-filter: blur(3px);
+  transition: opacity 600ms var(--ease), visibility 600ms;
+}
+.gate.is-open { opacity: 0; visibility: hidden; }
+
+.gate__inner { text-align: center; max-width: 32rem; }
+.gate__mark { width: 62px; height: auto; margin-bottom: 18px; opacity: 0.95; }
+
+.wordmark {
+  font-family: var(--dev);
+  font-size: clamp(3.6rem, 13vw, 7rem);
+  font-weight: 700;
+  line-height: 0.95;
+  margin: 0;
+  letter-spacing: -0.01em;
+  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.6);
+}
+.wordmark__roman {
+  margin: 6px 0 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.gate__hook {
+  margin: 26px auto 0;
+  font-size: clamp(1rem, 2.6vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 26rem;
+}
+.gate__now {
+  margin: 16px 0 0;
+  font-size: 0.9rem;
+  color: var(--haldi);
+  font-family: var(--dev);
+}
+.gate__enter {
+  margin-top: 34px;
+  padding: 16px 40px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--vermillion-hot), var(--vermillion));
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+  margin-inline: auto;
+  box-shadow: 0 10px 40px rgba(226, 69, 42, 0.45);
+  transition: transform 200ms var(--ease), box-shadow 200ms var(--ease);
+}
+.gate__enter:hover { transform: translateY(-2px); box-shadow: 0 16px 50px rgba(226, 69, 42, 0.6); }
+.gate__enter:active { transform: translateY(0); }
+.gate__enterMain { font-family: var(--dev); font-size: 1.28rem; font-weight: 600; }
+.gate__enterSub { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.85; }
+.gate__fineprint { margin-top: 20px; font-size: 0.72rem; color: var(--text-faint); }
+
+/* ── Top bar ──────────────────────────────────────────────────────────── */
+
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 18px clamp(16px, 4vw, 34px);
+  padding-top: max(18px, env(safe-area-inset-top));
+}
+.topbar__left { display: flex; align-items: center; gap: 12px; }
+.topbar__mark { width: 34px; height: auto; }
+.topbar__id { display: flex; flex-direction: column; line-height: 1.25; }
+.topbar__dev { font-family: var(--dev); font-size: 1.12rem; font-weight: 600; }
+.topbar__rot { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--haldi); }
+.topbar__right { text-align: right; line-height: 1.3; }
+.clock { display: block; font-size: 0.94rem; font-variant-numeric: tabular-nums; }
+.clock__zone { display: block; font-size: 0.68rem; color: var(--text-faint); }
+.listeners {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 4px;
+  font-family: var(--dev); font-size: 0.7rem; color: var(--haldi);
+}
+/* An explicit display value beats the hidden attribute, so restore it —
+   otherwise the live dot shows with no count behind it. */
+.listeners[hidden] { display: none; }
+.listeners::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--vermillion-hot);
+  box-shadow: 0 0 8px var(--vermillion-hot);
+}
+
+/* ── Scene switcher ───────────────────────────────────────────────────── */
+
+.scenepick {
+  position: fixed;
+  z-index: 40;
+  top: 50%;
+  right: clamp(16px, 4vw, 34px);
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.spick {
+  appearance: none;
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  color: var(--text-dim);
+  padding: 12px 16px;
+  cursor: pointer;
+  text-align: right;
+  transition: all 260ms var(--ease);
+}
+.spick:hover { background: var(--glass-hi); color: var(--text); }
+.spick.is-on {
+  background: rgba(226, 69, 42, 0.35);
+  border-color: rgba(255, 160, 120, 0.5);
+  color: #fff;
+}
+.spick__dev { display: block; font-family: var(--dev); font-size: 1rem; font-weight: 600; }
+.spick__hint { display: block; font-size: 0.63rem; letter-spacing: 0.06em; opacity: 0.72; margin-top: 2px; }
+
+/* ── Channel switch ───────────────────────────────────────────────────── */
+
+/* Left edge, mirroring the scene switcher on the right: what you hear on one
+   side, where you are on the other. */
+/* Sits high on the left, under the wordmark — the rotation heading occupies
+   the lower left, and a vertically centred switcher collides with it on short
+   viewports. */
+.chanpick {
+  position: fixed;
+  z-index: 40;
+  top: 96px;
+  left: clamp(16px, 4vw, 34px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.chan {
+  appearance: none;
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  color: var(--text-dim);
+  padding: 12px 18px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 260ms var(--ease);
+}
+.chan:hover:not(:disabled) { background: var(--glass-hi); color: var(--text); }
+.chan.is-on {
+  background: rgba(226, 69, 42, 0.35);
+  border-color: rgba(255, 160, 120, 0.5);
+  color: #fff;
+}
+.chan:disabled { opacity: 0.32; cursor: not-allowed; }
+.chan__dev { display: block; font-family: var(--dev); font-size: 1.06rem; font-weight: 600; }
+.chan__en { display: block; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.72; margin-top: 2px; }
+
+/* ── Rotation card ────────────────────────────────────────────────────── */
+
+/* Anchored bottom-left, not centred. Both scenes put their subject on the
+   centre line — the idol's face in Darshan, the pandal arch in Street — so
+   centred type would land squarely on it. */
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  align-items: end;
+  justify-items: start;
+  pointer-events: none;
+  padding: 100px clamp(16px, 4vw, 34px) 190px;
+}
+.rotcard { text-align: left; max-width: 30rem; }
+.rotcard__kicker {
+  font-family: var(--dev);
+  font-size: 0.74rem;
+  color: var(--haldi);
+  margin: 0 0 10px;
+}
+.rotcard__dev {
+  font-family: var(--dev);
+  font-size: clamp(2.6rem, 9vw, 5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0;
+  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.65);
+}
+.rotcard__en {
+  margin: 8px 0 0;
+  font-size: 0.76rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.rotcard__blurb {
+  margin: 18px 0 0;
+  max-width: 23rem;
+  font-size: 0.96rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
+}
+
+/* Devanagari never takes the Latin tracking used on eyebrow text — extra
+   letter-spacing pulls conjuncts and matras apart. Latin-only labels
+   (.rotcard__en, .wordmark__roman, .topbar__rot) keep theirs. */
+
+/* ── Setup notice ─────────────────────────────────────────────────────── */
+
+/* Sits high, clear of both the artwork's focal centre and the rotation card. */
+.setup {
+  position: fixed;
+  z-index: 45;
+  left: 50%;
+  top: 88px;
+  transform: translateX(-50%);
+  width: min(30rem, calc(100vw - 40px));
+  padding: 16px 20px;
+  border: 1px solid rgba(255, 190, 120, 0.35);
+  border-radius: 14px;
+  background: rgba(40, 18, 8, 0.82);
+  backdrop-filter: blur(12px);
+}
+.setup__close {
+  position: absolute; top: 10px; right: 12px;
+  width: 24px; height: 24px;
+  border: 1px solid var(--hairline); border-radius: 50%;
+  background: var(--glass); color: var(--text-dim);
+  font-size: 0.7rem; cursor: pointer;
+}
+.setup__close:hover { color: var(--text); }
+.setup__title { margin: 0 0 6px; font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--haldi); }
+.setup__body { margin: 0; font-size: 0.84rem; line-height: 1.55; color: var(--text-dim); }
+.setup code {
+  font-size: 0.8em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ── Player bar ───────────────────────────────────────────────────────── */
+
+.player {
+  position: fixed;
+  z-index: 50;
+  left: 0; right: 0; bottom: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas: "meta transport extras" "seek seek seek";
+  align-items: center;
+  gap: 10px clamp(14px, 3vw, 30px);
+  padding: 18px clamp(16px, 4vw, 34px);
+  padding-bottom: max(18px, env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, transparent, rgba(10, 5, 3, 0.86) 42%);
+  backdrop-filter: blur(14px);
+}
+
+.player__meta { grid-area: meta; min-width: 0; }
+.player__status {
+  margin: 0 0 3px;
+  font-family: var(--dev);
+  font-size: 0.72rem;
+  color: var(--haldi);
+}
+.player__status.is-live { color: var(--vermillion-hot); }
+.player__title {
+  margin: 0;
+  font-size: 1.04rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player__title .dev { font-family: var(--dev); }
+.player__artist {
+  margin: 2px 0 0;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player__transport { grid-area: transport; display: flex; align-items: center; gap: 8px; }
+.tbtn {
+  width: 42px; height: 42px;
+  display: grid; place-items: center;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: var(--glass);
+  color: var(--text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 200ms var(--ease);
+}
+.tbtn:hover:not(:disabled) { background: var(--glass-hi); transform: scale(1.06); }
+.tbtn:disabled { opacity: 0.3; cursor: not-allowed; }
+.tbtn--play {
+  width: 56px; height: 56px;
+  font-size: 1.16rem;
+  background: linear-gradient(180deg, var(--vermillion-hot), var(--vermillion));
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 26px rgba(226, 69, 42, 0.5);
+}
+.tbtn--small { width: 34px; height: 34px; font-size: 0.8rem; }
+.tbtn--small.is-on {
+  background: rgba(226, 69, 42, 0.4);
+  border-color: rgba(255, 160, 120, 0.55);
+  color: #fff;
+}
+
+.player__seek { grid-area: seek; display: flex; align-items: center; gap: 12px; }
+.player__time { font-size: 0.7rem; font-variant-numeric: tabular-nums; color: var(--text-faint); min-width: 2.6rem; }
+/* Position within the playlist. Replaces the queue panel — playlist mode never
+   exposes upcoming titles, so a count is the honest amount of detail. */
+.player__pos {
+  font-size: 0.7rem; font-variant-numeric: tabular-nums;
+  color: var(--text-faint); min-width: 4.2rem; text-align: right;
+}
+
+.seek, .mixer__slider {
+  appearance: none;
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+.seek { background-image: linear-gradient(var(--vermillion-hot), var(--vermillion-hot)); background-repeat: no-repeat; background-size: 0% 100%; }
+.seek::-webkit-slider-thumb, .mixer__slider::-webkit-slider-thumb {
+  appearance: none; width: 12px; height: 12px; border-radius: 50%;
+  background: #fff; box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+.seek::-moz-range-thumb, .mixer__slider::-moz-range-thumb {
+  width: 12px; height: 12px; border: 0; border-radius: 50%; background: #fff;
+}
+
+.player__extras { grid-area: extras; display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+.xbtn {
+  padding: 9px 15px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--glass);
+  color: var(--text-dim);
+  font-family: var(--dev);
+  font-size: 0.78rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 200ms var(--ease);
+}
+.xbtn:hover { background: var(--glass-hi); color: var(--text); }
+.xbtn.is-on { background: rgba(226, 69, 42, 0.35); border-color: rgba(255, 160, 120, 0.5); color: #fff; }
+
+/* ── Slide-in panels ──────────────────────────────────────────────────── */
+
+.lyrics, .mixer {
+  position: fixed;
+  z-index: 60;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: min(24rem, 100vw);
+  padding: 26px clamp(18px, 3vw, 26px);
+  background: rgba(16, 8, 5, 0.9);
+  backdrop-filter: blur(18px);
+  border-left: 1px solid var(--hairline);
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 420ms var(--ease);
+}
+.lyrics.is-open, .mixer.is-open { transform: translateX(0); }
+/* [hidden] would kill the slide-in, so visibility is driven by the transform. */
+.lyrics[hidden], .mixer[hidden] { display: block; }
+
+.lyrics__head, .mixer__head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 12px; margin-bottom: 18px;
+  padding-top: max(0px, env(safe-area-inset-top));
+}
+.lyrics__title, .mixer__title {
+  margin: 0; font-family: var(--dev); font-size: 1.18rem; font-weight: 600;
+}
+.lyrics__close, .mixer__close {
+  border: 1px solid var(--hairline); border-radius: 50%;
+  width: 30px; height: 30px; flex: none;
+  background: var(--glass); color: var(--text-dim); cursor: pointer;
+}
+.lyrics__close:hover, .mixer__close:hover { color: var(--text); }
+
+/* Support links */
+.slinks { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+.slink {
+  display: block; padding: 13px 16px;
+  border: 1px solid var(--hairline); border-radius: 12px;
+  background: var(--glass); color: var(--text);
+  text-decoration: none; font-size: 0.92rem;
+  transition: all 200ms var(--ease);
+}
+.slink:hover { background: rgba(226, 69, 42, 0.32); border-color: rgba(255, 160, 120, 0.5); }
+
+.lyrics__body {
+  margin: 0;
+  font-family: var(--dev);
+  font-size: 1.02rem;
+  line-height: 2;
+  white-space: pre-wrap;
+  color: var(--text-dim);
+}
+
+.mixer__note { margin: 0 0 20px; font-size: 0.76rem; color: var(--text-faint); line-height: 1.5; }
+.mixer__row { display: flex; align-items: center; gap: 14px; margin-top: 18px; }
+.mixer__toggle {
+  flex: none; min-width: 6.6rem;
+  padding: 10px 14px;
+  border: 1px solid var(--hairline); border-radius: 999px;
+  background: var(--glass); color: var(--text-dim);
+  font-family: var(--dev); font-size: 0.86rem; cursor: pointer;
+  transition: all 200ms var(--ease);
+}
+.mixer__toggle[aria-pressed="true"] {
+  background: rgba(226, 69, 42, 0.4);
+  border-color: rgba(255, 160, 120, 0.55);
+  color: #fff;
+}
+.mixer__cap { margin: 7px 0 0; font-size: 0.72rem; color: var(--text-faint); }
+
+/* The YouTube iframe exists but is never seen — audio only. */
+.ytcage {
+  position: fixed;
+  width: 1px; height: 1px;
+  left: -9999px; top: -9999px;
+  opacity: 0; pointer-events: none;
+}
+
+/* ── Narrow screens ───────────────────────────────────────────────────── */
+
+@media (max-width: 820px) {
+  /* Both switchers drop to horizontal rows stacked above the player. */
+  .scenepick {
+    top: auto; bottom: 216px; right: 50%;
+    transform: translateX(50%);
+    flex-direction: row;
+  }
+  .spick { text-align: center; padding: 9px 15px; }
+  .spick__hint { display: none; }
+
+  .chanpick {
+    top: auto; bottom: 272px; left: 50%;
+    transform: translateX(-50%);
+    flex-direction: row;
+  }
+  .chan { text-align: center; padding: 9px 18px; }
+  .chan__en { display: none; }
+
+  .player {
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "meta transport" "seek seek" "extras extras";
+    gap: 8px 14px;
+  }
+  .player__extras { justify-content: center; }
+  .stage { padding-bottom: 340px; }
+  .setup { top: 80px; }
+  .rotcard__blurb { font-size: 0.9rem; }
+  .rotcard__dev { font-size: clamp(2.2rem, 11vw, 3.4rem); }
+  .player__pos { display: none; }
+  .lyrics, .mixer { width: 100vw; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+}

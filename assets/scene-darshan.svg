@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <!-- PLACEHOLDER — दर्शन / Darshan.
+       Stand-in for the commissioned artwork. Composition mirrors the spec in
+       README.md: idol on the centre line with its face high in the frame,
+       mandap columns framing the sides, offerings and lamps low. -->
+  <defs>
+    <radialGradient id="halo" cx="0.5" cy="0.4" r="0.62">
+      <stop offset="0%" stop-color="#ffe9b0" stop-opacity="0.95"/>
+      <stop offset="32%" stop-color="#ffb547" stop-opacity="0.6"/>
+      <stop offset="70%" stop-color="#d4551f" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#3a1008" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mandap" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5c1a0e"/>
+      <stop offset="100%" stop-color="#26090a"/>
+    </linearGradient>
+    <linearGradient id="idol" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff8f4a"/>
+      <stop offset="55%" stop-color="#e2452a"/>
+      <stop offset="100%" stop-color="#8e2416"/>
+    </linearGradient>
+    <linearGradient id="cloth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffcf5c"/>
+      <stop offset="100%" stop-color="#e08a1c"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#mandap)"/>
+  <ellipse cx="960" cy="440" rx="880" ry="620" fill="url(#halo)"/>
+
+  <!-- mandap columns framing left and right -->
+  <g fill="#3d0f08" opacity="0.95">
+    <rect x="0" y="0" width="180" height="1080"/>
+    <rect x="1740" y="0" width="180" height="1080"/>
+    <rect x="150" y="80" width="60" height="1000" rx="8"/>
+    <rect x="1710" y="80" width="60" height="1000" rx="8"/>
+  </g>
+  <!-- decorative arch over the top -->
+  <path d="M180 200 Q960 -40 1740 200 L1740 90 Q960 -140 180 90 Z" fill="#6d1f10"/>
+  <g fill="#ffc960" opacity="0.75">
+    <circle cx="300" cy="150" r="9"/><circle cx="520" cy="94" r="9"/>
+    <circle cx="740" cy="56" r="9"/><circle cx="960" cy="44" r="9"/>
+    <circle cx="1180" cy="56" r="9"/><circle cx="1400" cy="94" r="9"/>
+    <circle cx="1620" cy="150" r="9"/>
+  </g>
+
+  <!-- marigold garlands -->
+  <g fill="#ffa62b" opacity="0.85">
+    <g id="g1">
+      <circle cx="250" cy="250" r="13"/><circle cx="300" cy="292" r="13"/>
+      <circle cx="352" cy="330" r="13"/><circle cx="406" cy="362" r="13"/>
+    </g>
+    <use href="#g1" transform="translate(1420,0) scale(-1,1) translate(-1920,0)"/>
+  </g>
+
+  <!-- idol: body, head, trunk, crown -->
+  <g>
+    <ellipse cx="960" cy="720" rx="250" ry="270" fill="url(#idol)"/>
+    <path d="M710 760 q250 90 500 0 l0 220 l-500 0 z" fill="url(#cloth)" opacity="0.9"/>
+    <circle cx="960" cy="420" r="185" fill="url(#idol)"/>
+    <!-- ears -->
+    <ellipse cx="762" cy="430" rx="72" ry="112" fill="#c93a22"/>
+    <ellipse cx="1158" cy="430" rx="72" ry="112" fill="#c93a22"/>
+    <!-- trunk, curling to its left -->
+    <path d="M960 470 q54 116 8 196 q-40 70 -104 34 q-46 -28 -6 -74 q30 -34 62 -6"
+          fill="none" stroke="#c93a22" stroke-width="52" stroke-linecap="round"/>
+    <!-- eyes -->
+    <circle cx="888" cy="392" r="15" fill="#2a0a05"/>
+    <circle cx="1032" cy="392" r="15" fill="#2a0a05"/>
+    <!-- crown -->
+    <path d="M846 262 L888 168 L930 240 L960 140 L990 240 L1032 168 L1074 262 Z" fill="#ffcf5c"/>
+    <circle cx="960" cy="286" r="16" fill="#ffe9a8"/>
+  </g>
+
+  <!-- offering table, lamps, prasad -->
+  <rect x="560" y="980" width="800" height="34" rx="10" fill="#4a1408"/>
+  <g fill="#ffdf8f">
+    <ellipse cx="700" cy="962" rx="34" ry="14"/>
+    <path d="M700 948 q10 -30 0 -44 q-10 14 0 44" fill="#ffb347"/>
+    <ellipse cx="1220" cy="962" rx="34" ry="14"/>
+    <path d="M1220 948 q10 -30 0 -44 q-10 14 0 44" fill="#ffb347"/>
+  </g>
+  <g fill="#ffa62b" opacity="0.9">
+    <circle cx="880" cy="962" r="15"/><circle cx="920" cy="968" r="15"/>
+    <circle cx="960" cy="962" r="15"/><circle cx="1000" cy="968" r="15"/>
+    <circle cx="1040" cy="962" r="15"/>
+  </g>
+
+  <text x="960" y="1052" font-family="system-ui, sans-serif" font-size="19"
+        fill="#ffffff" opacity="0.3" text-anchor="middle" letter-spacing="5">
+    PLACEHOLDER · दर्शन / DARSHAN · REPLACE WITH ARTWORK
+  </text>
+</svg>
