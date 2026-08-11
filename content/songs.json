@@ -1,0 +1,233 @@
+[
+  {
+    "id": 0,
+    "title": "Sukhakarta Dukhaharta",
+    "category": "aarti",
+    "lyrics": "sukhakarta.txt",
+    "legacyAudio": "aarti/1-sukhakarta-dukhaharta.mp3"
+  },
+  {
+    "id": 1,
+    "title": "Lavthavti Vikrala",
+    "category": "aarti",
+    "lyrics": "lavthavti_vikrala.txt",
+    "legacyAudio": "aarti/2-lavthavti-vikrala.mp3"
+  },
+  {
+    "id": 2,
+    "title": "Durge Durghat",
+    "category": "aarti",
+    "lyrics": "durge-durgahat.txt",
+    "legacyAudio": "aarti/3-durge-durgahat.mp3"
+  },
+  {
+    "id": 3,
+    "title": "Yuge Athhavis",
+    "category": "aarti",
+    "lyrics": "yuge-athhavis.txt",
+    "legacyAudio": "aarti/4-yuge-athhavis.mp3"
+  },
+  {
+    "id": 4,
+    "title": "Trighunatmak Trimurti",
+    "category": "aarti",
+    "lyrics": "trighunatmak-trimurti.txt",
+    "legacyAudio": "aarti/5-trighunatmak-trimurti.mp3"
+  },
+  {
+    "id": 5,
+    "title": "Nana Parimal",
+    "category": "aarti",
+    "lyrics": "nana-marimal.txt",
+    "legacyAudio": "aarti/6-nana-marimal.mp3"
+  },
+  {
+    "id": 6,
+    "title": "Shendurlal Chadhao",
+    "category": "aarti",
+    "lyrics": "shendurlal-chadhao.txt",
+    "legacyAudio": "aarti/7-shendurlal-chadhao.mp3"
+  },
+  {
+    "id": 7,
+    "title": "Yei Ho Vithhale",
+    "category": "aarti",
+    "lyrics": "yeio-vithhale.txt",
+    "legacyAudio": "aarti/8-yeio-vithhale.mp3"
+  },
+  {
+    "id": 8,
+    "title": "Tu Sukhatarta",
+    "category": "aarti",
+    "lyrics": "tu-shukhatarta.txt",
+    "legacyAudio": "aarti/9-tu-shukhatarta.mp3"
+  },
+  {
+    "id": 9,
+    "title": "Aarti Dyanaraja",
+    "category": "aarti",
+    "lyrics": "aarti-dyanaraja.txt",
+    "legacyAudio": "aarti/10-aarti-dyanaraja.mp3"
+  },
+  {
+    "id": 10,
+    "title": "Aarti Saibaba",
+    "category": "aarti",
+    "lyrics": "aarti-saibaba.txt",
+    "legacyAudio": null
+  },
+  {
+    "id": 11,
+    "title": "Aarti Saprem (Vitthal)",
+    "category": "aarti",
+    "lyrics": "aarti-saprem.txt",
+    "legacyAudio": null
+  },
+  {
+    "id": 12,
+    "title": "Om Jaya Jagadhish",
+    "category": "aarti",
+    "lyrics": "om-jaya-jagadhish.txt",
+    "legacyAudio": "aarti/13-om-jaya-jagadhish.mp3"
+  },
+  {
+    "id": 13,
+    "title": "Aata Swami Sukhe Nidra",
+    "category": "aarti",
+    "lyrics": "aata-swami-sukhe-nidra.txt",
+    "legacyAudio": "aarti/14-aata-swami-sukhe-nidra.mp3"
+  },
+  {
+    "id": 14,
+    "title": "Dhanya Dhanya Ho",
+    "category": "aarti",
+    "lyrics": "dhanya-dhanya-ho.txt",
+    "legacyAudio": "aarti/15-dhanya-dhanya-ho.mp3"
+  },
+  {
+    "id": 15,
+    "title": "Rijo Rijo",
+    "category": "aarti",
+    "lyrics": "rijo-rijo.txt",
+    "legacyAudio": "aarti/16-rijo-rijo.mp3"
+  },
+  {
+    "id": 16,
+    "title": "Mujhe Sache Dilse",
+    "category": "aarti",
+    "lyrics": "mujhe-sache-dilse.txt",
+    "legacyAudio": "aarti/17-mujhe-sache-dilse.mp3"
+  },
+  {
+    "id": 17,
+    "title": "Jai Jai Dindayala (Satyanarayan)",
+    "category": "aarti",
+    "lyrics": "jai-jai-din-dayala.txt",
+    "legacyAudio": null
+  },
+  {
+    "id": 18,
+    "title": "Kabhi Ram Banke",
+    "category": "aarti",
+    "lyrics": "kabhi-ram-banke.txt",
+    "legacyAudio": "aarti/19-kabhi-ram-banke.mp3"
+  },
+  {
+    "id": 19,
+    "title": "Rama Rama",
+    "category": "aarti",
+    "lyrics": "rama-rama-rama.txt",
+    "legacyAudio": "aarti/20-rama-rama-rama.mp3"
+  },
+  {
+    "id": 20,
+    "title": "Ganaraya Aarti Hi Tujala",
+    "category": "aarti",
+    "lyrics": "ganaraya-aarti-hi-tujala.txt",
+    "legacyAudio": "aarti/21-ganaraya-aarti-hi-tujala.mp3"
+  },
+  {
+    "id": 21,
+    "title": "Shree Swami Samartha",
+    "category": "aarti",
+    "lyrics": "shree-swami-samartha.txt",
+    "legacyAudio": "aarti/22-shree-swami-samartha.mp3"
+  },
+  {
+    "id": 22,
+    "title": "Tuch Sukhakarta",
+    "category": "aarti",
+    "lyrics": "tuch-sukhakarta.txt",
+    "legacyAudio": "aarti/23-tuch-sukhakarta.mp3"
+  },
+  {
+    "id": 23,
+    "title": "Tula Khandyavar Gein (Sai Baba)",
+    "category": "aarti",
+    "lyrics": "tula-khandyavar.txt",
+    "legacyAudio": null
+  },
+  {
+    "id": 24,
+    "title": "Vithal Vithal Vithala",
+    "category": "aarti",
+    "lyrics": "vithal-vithal-vithala.txt",
+    "legacyAudio": "aarti/25-vithal-vithal-vithala.mp3"
+  },
+  {
+    "id": 25,
+    "title": "Hari Chala Mandira",
+    "category": "aarti",
+    "lyrics": "hari-chala-mandira.txt",
+    "legacyAudio": "aarti/26-hari-chala-mandira.mp3"
+  },
+  {
+    "id": 26,
+    "title": "Aarti Ramji Tumhari",
+    "category": "aarti",
+    "lyrics": "aarti-ramji-tumhari.txt",
+    "legacyAudio": "aarti/27-aarti-ramji-tumhari.mp3"
+  },
+  {
+    "id": 27,
+    "title": "Dhupadipa Jhala Aata",
+    "category": "aarti",
+    "lyrics": "dhupadipa-jhala-aata.txt",
+    "legacyAudio": "aarti/28-dhupadipa-jhala-aata.mp3"
+  },
+  {
+    "id": 28,
+    "title": "Shevat Goad Kari",
+    "category": "aarti",
+    "lyrics": "shevat-god-kari.txt",
+    "legacyAudio": "aarti/29-shevat-god-kari.mp3"
+  },
+  {
+    "id": 29,
+    "title": "Ghalin Lotangan",
+    "category": "aarti",
+    "lyrics": "ghalin-lotangan.txt",
+    "legacyAudio": "aarti/30-ghalin-lotangan.mp3"
+  },
+  {
+    "id": 30,
+    "title": "Ashthavinayak",
+    "category": "gajar",
+    "lyrics": null,
+    "legacyAudio": "gajar/1-ashthavinayak.mp3"
+  },
+  {
+    "id": 31,
+    "title": "Moraya Moraya",
+    "category": "shlok",
+    "lyrics": "sukhakarta.txt",
+    "legacyAudio": "aarti/1-sukhakarta-dukhaharta.mp3"
+  },
+  {
+    "id": 32,
+    "title": "Devadi deva",
+    "category": "shlok",
+    "lyrics": "lavthavti_vikrala.txt",
+    "legacyAudio": "aarti/2-lavthavti-vikrala.mp3"
+  }
+]
