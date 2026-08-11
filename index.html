@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="mr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>पंडाल — Pandal · Ganpati, all eleven days</title>
+<meta name="description" content="The speaker outside the pandal, all eleven days. Aartis, gajar and dhol-tasha on the Ganesh Chaturthi clock.">
+<meta name="theme-color" content="#1a0d08">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="पंडाल — Pandal">
+<meta property="og:description" content="The speaker outside the pandal, all eleven days.">
+<meta property="og:image" content="assets/bappa-logo-red.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/bappa-logo-red.png">
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://www.youtube.com">
+</head>
+<body>
+
+<!-- ── Scene layers. Crossfaded, never both at full opacity. ────────────── -->
+<div class="scenery" aria-hidden="true">
+  <div class="scene" data-scene="galli"></div>
+  <div class="scene" data-scene="darshan"></div>
+  <div class="wash wash--warm"></div>
+  <div class="wash wash--tint"></div>
+  <div class="wash wash--lamp"></div>
+  <div class="wash wash--vignette"></div>
+</div>
+
+<!-- ── Entry gate. One gesture unlocks both YouTube and the Web Audio ────
+     ambience; browsers require it, so the design leans into it. -->
+<div class="gate" id="gate">
+  <div class="gate__inner">
+    <img class="gate__mark" src="assets/bappa-logo-red.png" alt="">
+    <h1 class="wordmark">पंडाल</h1>
+    <p class="wordmark__roman">Pandal</p>
+    <p class="gate__hook">The speaker outside the pandal, all eleven days.</p>
+    <p class="gate__now" id="gateNow"></p>
+    <button class="gate__enter" id="enterBtn" type="button">
+      <span class="gate__enterMain">आत या</span>
+      <span class="gate__enterSub">step inside · plays out loud</span>
+    </button>
+    <p class="gate__fineprint">Space toggles playback once you are in.</p>
+  </div>
+</div>
+
+<!-- ── Top bar ──────────────────────────────────────────────────────────── -->
+<header class="topbar" id="topbar">
+  <div class="topbar__left">
+    <img class="topbar__mark" src="assets/bappa-logo-red.png" alt="पंडाल">
+    <div class="topbar__id">
+      <span class="topbar__dev">पंडाल</span>
+      <span class="topbar__rot" id="rotLabel"></span>
+    </div>
+  </div>
+  <div class="topbar__right">
+    <span class="clock" id="clock"></span>
+    <span class="clock__zone" id="clockDate"></span>
+  </div>
+</header>
+
+<!-- ── Scene switcher ───────────────────────────────────────────────────── -->
+<nav class="scenepick" id="scenePick" aria-label="View"></nav>
+
+<!-- ── Rotation card ────────────────────────────────────────────────────── -->
+<main class="stage" id="stage">
+  <div class="rotcard">
+    <p class="rotcard__kicker">आत्ता चालू आहे · now playing</p>
+    <h2 class="rotcard__dev" id="rotDev"></h2>
+    <p class="rotcard__en" id="rotEn"></p>
+    <p class="rotcard__blurb" id="rotBlurb"></p>
+  </div>
+</main>
+
+<!-- ── Setup notice, shown only while every track lacks a video ID ──────── -->
+<div class="setup" id="setup" hidden>
+  <p class="setup__title">No video IDs yet</p>
+  <p class="setup__body">
+    Everything here works except the sound. Open <code>data.js</code> and paste a
+    YouTube ID into any track's <code>yt</code> field — the page starts playing
+    from the first one you fill. The ambience below runs regardless.
+  </p>
+</div>
+
+<!-- ── Lyrics panel ─────────────────────────────────────────────────────── -->
+<aside class="lyrics" id="lyrics" hidden>
+  <div class="lyrics__head">
+    <h3 class="lyrics__title" id="lyricsTitle"></h3>
+    <button class="lyrics__close" id="lyricsClose" type="button" aria-label="Close lyrics">✕</button>
+  </div>
+  <pre class="lyrics__body" id="lyricsBody"></pre>
+</aside>
+
+<!-- ── Ambience mixer ───────────────────────────────────────────────────── -->
+<aside class="mixer" id="mixer" hidden>
+  <div class="mixer__head">
+    <h3 class="mixer__title">आवाज · ambience</h3>
+    <button class="mixer__close" id="mixerClose" type="button" aria-label="Close mixer">✕</button>
+  </div>
+  <p class="mixer__note">Synthesised live, not sampled. Mixes under the music.</p>
+
+  <div class="mixer__row">
+    <button class="mixer__toggle" id="ghantiToggle" type="button" aria-pressed="false">घंटा</button>
+    <input class="mixer__slider" id="ghantiVol" type="range" min="0" max="100" value="45" aria-label="Ghanti volume">
+  </div>
+  <p class="mixer__cap">Temple bell, struck every half minute or so.</p>
+
+  <div class="mixer__row">
+    <button class="mixer__toggle" id="dholToggle" type="button" aria-pressed="false">ढोल-ताशा</button>
+    <input class="mixer__slider" id="dholVol" type="range" min="0" max="100" value="30" aria-label="Dhol volume">
+  </div>
+  <p class="mixer__cap">Pathak pattern — dhol on the low, tasha on the crack.</p>
+</aside>
+
+<!-- ── Player bar ───────────────────────────────────────────────────────── -->
+<footer class="player" id="player">
+  <div class="player__meta">
+    <p class="player__status" id="status">थांबलं आहे</p>
+    <h2 class="player__title" id="trackTitle">—</h2>
+    <p class="player__artist" id="trackArtist"></p>
+  </div>
+
+  <div class="player__transport">
+    <button class="tbtn" id="prevBtn" type="button" aria-label="Previous">⏮</button>
+    <button class="tbtn tbtn--play" id="playBtn" type="button" aria-label="Play">▶</button>
+    <button class="tbtn" id="nextBtn" type="button" aria-label="Next">⏭</button>
+  </div>
+
+  <div class="player__seek">
+    <span class="player__time" id="timeNow">0:00</span>
+    <input class="seek" id="seek" type="range" min="0" max="1000" value="0" aria-label="Seek">
+    <span class="player__time" id="timeEnd">0:00</span>
+  </div>
+
+  <div class="player__extras">
+    <button class="xbtn" id="lyricsBtn" type="button" hidden>गीत · lyrics</button>
+    <button class="xbtn" id="mixerBtn" type="button">आवाज · ambience</button>
+    <button class="xbtn" id="queueBtn" type="button">यादी · queue</button>
+  </div>
+</footer>
+
+<!-- ── Queue ────────────────────────────────────────────────────────────── -->
+<aside class="queue" id="queue" hidden>
+  <div class="queue__head">
+    <h3 class="queue__title" id="queueTitle"></h3>
+    <button class="queue__close" id="queueClose" type="button" aria-label="Close queue">✕</button>
+  </div>
+  <ol class="queue__list" id="queueList"></ol>
+</aside>
+
+<!-- Hidden YouTube host. Never visible; all control is through the API. -->
+<div class="ytcage" aria-hidden="true"><div id="ytplayer"></div></div>
+
+<script src="data.js"></script>
+<script src="ambience.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
